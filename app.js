@@ -6,8 +6,10 @@ var logger = require('morgan');
 
 var indexRouter = require('./server/routes/index');
 var usersRouter = require('./server/routes/users');
-var videoRoomRouter = require('./server/routes/videoRoom');
+var videoRoomRouter = require('./server/routes/videoRoomRouter');
+var chatRoomRouter = require('./server/routes/chatRoomRouter');
 var videoSocket=require('./server/models/videoSocket');
+var chatSocket=require('./server/models/chatSocket');
 var app = express();
 
 // view engine setup
@@ -21,9 +23,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 videoSocket;
+chatSocket;
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/videoRoom',videoRoomRouter);
+app.use('/chatRoom',chatRoomRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
