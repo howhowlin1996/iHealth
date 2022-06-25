@@ -11,6 +11,7 @@ import {
 import NavBar from'./nbar';
 import Footer from './footer';
 export default function SplitScreen() {
+ 
   return (
   <Stack direction={'column'}>  
     <NavBar/>

@@ -5,10 +5,13 @@ import App from './App';
 import SignUp from './signUp';
 import SignIn from './signIn';
 import Clinic from './clinic';
+import VideoChat from'./videoChat';
 import ClinicHomePage from './clinicHomePage';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react'
 import {Routes,Route, BrowserRouter}from "react-router-dom";
+
+console.log(process.env.REACT_APP_MY_ENVIRONMENT_VARIABLE)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -40,6 +43,11 @@ root.render(
          <Route path ="/clinicHomePage" element={ 
           <ChakraProvider>
             <ClinicHomePage/>
+          </ChakraProvider>} 
+        />
+          <Route path ="/videoChat" element={ 
+          <ChakraProvider>
+            <VideoChat/>
           </ChakraProvider>} 
         />
          

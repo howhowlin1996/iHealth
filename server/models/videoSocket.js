@@ -3,7 +3,8 @@ const SocketServer = require('ws').Server;
 const SocketIdGroup=[];
 const clientGroup=[];
 //const URLSearchParams = require('url').URLSearchParams;
-const PORT = 8081 //指定 port
+
+const PORT = process.env.VideoChatPort //指定 port
 
 //創建 express 物件，綁定監聽  port , 設定開啟後在 console 中提示
 const server = express().listen(PORT, () => {
@@ -35,22 +36,27 @@ wss.on('connection', (ws,req) => {
   //ws.send("連線成功"+id+"\n"+"在線人數: "+clientGroup[socketPos].length);
   ws.on('message', data => {
     data = data.toString()  
-    let msg=JSON.parse(data);
+    //let msg=JSON.parse(data);
     //console.log(msg['type']);
     //ws.send(msg["txt"]);
 
     clientGroup[socketPos].forEach(client => {
-      console.log(clientGroup[socketPos].length);
+      //console.log(data);
       if(client!=ws)client.send(data)  // 發送至每個 client
     })
     
     
   })
   ws.on('close', () => {
+    clientGroup[socketPos].forEach(client => {
+       let data={'state':'end'}
+      if(client!=ws)client.send(JSON.stringify(data))  // 發送至每個 client
+    })
     let id=clientGroup[socketPos].indexOf(ws);
     clientGroup[socketPos].splice(id,1);
-    //console.log(clientGroup[socketPos].length);
+    console.log(clientGroup[socketPos].length);
     console.log('Close connected')
+    
     
   })
   

@@ -107,6 +107,18 @@ import {
                             {reserve}
 
                         </Button>
+                        <Button
+                            rounded={'full'}
+                            as={'a'}
+                            href={'/videoChat?token=1234'}
+                            bg={'blue.400'}
+                            color={'white'}
+                            _hover={{
+                            bg: 'blue.500',
+                            }}>
+                            進行看診
+
+                        </Button>
                         </Stack>
                     </Stack>
                     </Flex>
