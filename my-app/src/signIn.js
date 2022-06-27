@@ -11,8 +11,11 @@ import {
     Heading,
     useColorModeValue,
   } from '@chakra-ui/react';
+
+  import api from './utils/api.js'
   
   export default function SimpleCard() {
+    api.signin('a');
     return (
       <Flex
         minH={'100vh'}

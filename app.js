@@ -5,14 +5,15 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config()
 var indexRouter = require('./server/routes/index');
-var usersRouter = require('./server/routes/users');
 var videoRoomRouter = require('./server/routes/videoRoomRouter');
 var chatRoomRouter = require('./server/routes/chatRoomRouter');
 var videoSocket=require('./server/models/videoSocket');
 var chatSocket=require('./server/models/chatSocket');
 var app = express();
-
-
+var userRouter= require('./server/routes/userRouter');
+var API_VERSION=process.env.ApiVersion;
+const cors = require('cors');
+app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -25,10 +26,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 videoSocket;
 chatSocket;
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//app.use('/', indexRouter);
 app.use('/videoRoom',videoRoomRouter);
 app.use('/chatRoom',chatRoomRouter);
+app.use('/api/'+ API_VERSION,[userRouter]);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

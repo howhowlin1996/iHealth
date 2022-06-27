@@ -11,7 +11,7 @@ import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react'
 import {Routes,Route, BrowserRouter}from "react-router-dom";
 
-console.log(process.env.REACT_APP_MY_ENVIRONMENT_VARIABLE)
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
