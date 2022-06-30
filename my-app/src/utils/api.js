@@ -1,27 +1,30 @@
 
-  var hostname= 'http://localhost:3001/api/v1' // By aianlinb
-  function signIn(data) {
-    return fetch(`${hostname}/user/signIn?category=patient`, {
+  var hostname= 'https://18.236.9.61/:3000/api/v1' // By aianlinb
+
+  const api={
+    
+  signIn:function signIn(data) {
+    return fetch(`${this.hostname}/user/signIn?category=patient`, {
       body: JSON.stringify(data),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
       method: 'POST'
     }).then((response) => response.json());
-  }
+  },
 
-  function signUp(data){
+  signUp:function signUp(data){
     
-    return fetch(`${hostname}/user/signUp?category=patient`, {
+    return fetch(`${this.hostname}/user/signUp?category=patient`, {
       body: JSON.stringify(data),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
       method: 'POST'
     }).then((response) => response.json())
-  }
+  },
 
-  async function getClinicNearBy(data){
+  getClinicNearBy:async function getClinicNearBy(data){
     console.log(data);
    
     return fetch(`${hostname}/medical/clinic?type=nearby`, {
@@ -32,15 +35,15 @@
       method: 'POST'
     }).then((response) => response.json())
    
-  }
-  async function getClinicPopular(){
+  },
+  getClinicPopular:async function getClinicPopular(){
     return fetch(`${hostname}/medical/clinic?type=popular`, {
       method: 'GET'
     }).then((response) => response.json())
    
-  }
+  },
 
-  async function getDrugStoreNearBy(data){
+  getDrugStoreNearBy:async function getDrugStoreNearBy(data){
    
     return fetch(`${hostname}/medical/drugStore`, {
       body: JSON.stringify(data),
@@ -51,6 +54,7 @@
     }).then((response) => response.json())
    
   }
+}
   
 /*function passwordVerification(email){
     return fetch(hostname+`/validation/passwordReset?email=${email}`
@@ -67,6 +71,7 @@ function emailVerification(jwtToken){
 
 
 
-module.exports={
+/*module.exports= {
   signUp,signIn,getClinicNearBy,getClinicPopular,getDrugStoreNearBy
-}
+}*/
+export default api;

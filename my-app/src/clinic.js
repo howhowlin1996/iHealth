@@ -9,8 +9,10 @@ import {
 import NavBar from'./nbar';
 import Footer from './footer';
 import { useLocation} from 'react-router-dom';
-import {getClinicNearBy,getClinicPopular,getDrugStoreNearBy }from'./utils/api';
+
+//import {getClinicNearBy,getClinicPopular,getDrugStoreNearBy}from'./utils/api';
 import { useEffect,useState} from 'react';
+import api from'./utils/api'
 
 export default  function Clinic(){
     const search = useLocation().search;
@@ -24,12 +26,12 @@ export default  function Clinic(){
               lat:position.coords.latitude,
               lng: position.coords.longitude
           }
-          setclinicInform(await getClinicNearBy(pos));
+          setclinicInform(await api.getClinicNearBy(pos));
         });
       }
       else if(name==='popular'){
           async function getPopular(){
-            setclinicInform(await getClinicPopular());
+            setclinicInform(await api.getClinicPopular());
           }
           getPopular();
 
@@ -41,7 +43,7 @@ export default  function Clinic(){
               lat:position.coords.latitude,
               lng: position.coords.longitude
           }
-          setclinicInform(await getDrugStoreNearBy(pos));
+          setclinicInform(await api.getDrugStoreNearBy(pos));
         });
 
       }
