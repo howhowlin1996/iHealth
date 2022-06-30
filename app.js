@@ -7,8 +7,8 @@ require('dotenv').config()
 var indexRouter = require('./server/routes/index');
 var videoRoomRouter = require('./server/routes/videoRoomRouter');
 var chatRoomRouter = require('./server/routes/chatRoomRouter');
-var videoSocket=require('./server/models/videoSocket');
-var chatSocket=require('./server/models/chatSocket');
+//var videoSocket=require('./server/models/videoSocket');
+//var chatSocket=require('./server/models/chatSocket');
 var app = express();
 var userRouter= require('./server/routes/userRouter');
 var clinicRouter=require('./server/routes/getMedicalRouter')
@@ -28,8 +28,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(indexPath));
 
-videoSocket;
-chatSocket;
+//videoSocket;
+//chatSocket;
 //app.use('/', indexRouter);
 app.use('/videoRoom',videoRoomRouter);
 app.use('/chatRoom',chatRoomRouter);
