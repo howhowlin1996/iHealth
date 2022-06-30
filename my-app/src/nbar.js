@@ -417,11 +417,11 @@ const NAV_ITEMS: Array<NavItem> = [
     children: [
       {
         label: '搜尋附近診所',
-        href: 'http://localhost:3000/clinic?catergory=nearby',
+        href: '/clinic?catergory=nearby',
       },
       {
         label: '搜尋熱門診所',
-        href: 'http://localhost:3000/clinic?catergory=popular',
+        href: '/clinic?catergory=popular',
       },
     ],
   },
