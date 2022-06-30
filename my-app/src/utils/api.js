@@ -1,8 +1,7 @@
 
-  var hostname= 'api/v1' // By aianlinb
-  function signin(data) {
-    console.log(data)
-    return fetch(`${this.hostname}/user/signin`, {
+  var hostname= 'https://18.236.9.61:3001/api/v1' // By aianlinb
+  function signIn(data) {
+    return fetch(`${hostname}/user/signIn?category=patient`, {
       body: JSON.stringify(data),
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -10,8 +9,34 @@
       method: 'POST'
     }).then((response) => response.json());
   }
+
+  function signUp(data){
+    
+    return fetch(`${hostname}/user/signUp?category=patient`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST'
+    }).then((response) => response.json())
+  }
+
+  async function getClinicNearBy(data){
+    console.log(data);
+    let inform;
+    return fetch(`${hostname}/medical/clinic?type=nearby`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST'
+    }).then((response) => response.json())
+   
+     
+
+  }
   
-function passwordVerification(email){
+/*function passwordVerification(email){
     return fetch(hostname+`/validation/passwordReset?email=${email}`
     ).then((response) => response.json());
   }  
@@ -22,19 +47,10 @@ function emailVerification(jwtToken){
         Authorization: `Bearer ${jwtToken}`,
       })
     }).then((response) => response.json());
-  }
+  }*/
 
-function signup(data){
-  console.log(data)
-  return fetch(`http://localhost:3001/${hostname}/user/signup?category=patient`, {
-    body: JSON.stringify(data),
-    headers: new Headers({
-      'Content-Type': 'application/json',
-    }),
-    method: 'POST'
-  }).then((response) => response.json())
-}
+
 
 module.exports={
-  signup,signin
+  signUp,signIn,getClinicNearBy
 }

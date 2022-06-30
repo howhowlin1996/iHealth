@@ -8,36 +8,64 @@ import {
 } from '@chakra-ui/react';
 import NavBar from'./nbar';
 import Footer from './footer';
-import { useLocation } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
+import {getClinicNearBy}from'./utils/api';
+import { useEffect,useState} from 'react';
 
-export default function Clinic(){
+export default  function Clinic(){
     const search = useLocation().search;
     var name='popular';
-     name = new URLSearchParams(search).get('catergory');
-    console.log(name);
-      return(
-        <Stack direction={'column'}> 
-             <NavBar/>
-             <Text
-              as={'h1'}
-              fontSize={'30px'}
-              align={'center'}
-              fontWeight={'bold'}
-             >
-              {name==='popular' ? '熱門診所':'附近診所'}
-             
-            </Text>
-             <Stack direction={'column'} align={'center'}> 
-                  <ClinicCard/>
-                  <ClinicCard/>
-                  <ClinicCard/>
-                  <ClinicCard/>
-                  <ClinicCard/>
-             </Stack>
-             <Footer/>
-        </Stack>
+    name = new URLSearchParams(search).get('catergory');
+    const [clinicInform, setclinicInform] = useState({});
+    useEffect(() => {
+      if(name==='nearby'){
+        navigator.geolocation.getCurrentPosition(async function(position) {
+          const pos={
+              lat:position.coords.latitude,
+              lng: position.coords.longitude
+          }
+          console.log( setclinicInform(await getClinicNearBy(pos)));
+        });
+      }
+    },[]);
+ 
+      console.log(Object.values(clinicInform)[0]);
+      let clinicInformArray=Object.values(clinicInform);
+      if(Object.keys(clinicInform).length===0){
+        return(
+            <div>
+            </div>
+        )
 
-      );
+      }
+      else{
+        return(
+          <Stack direction={'column'}> 
+               <NavBar/>
+               <Text
+                as={'h1'}
+                fontSize={'30px'}
+                align={'center'}
+                fontWeight={'bold'}
+               >
+                {name==='popular' ? '熱門診所':'附近診所'}
+               
+              </Text>
+               <Stack direction={'column'} align={'center'}> 
+                    {clinicInformArray.map((data)=>{
+                      console.log(data);
+                      
+                    })}
+                    
+                   
+               </Stack>
+               <Footer/>
+          </Stack>
+  
+        );
+
+      }
+     
 }
 
  function ClinicCard() {

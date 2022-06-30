@@ -14,8 +14,22 @@ import {
 
   import api from './utils/api.js'
   
+  async function signIn(inform){
+    let result= await api.signIn(inform);
+    if(result['error']!==undefined) {
+      alert('密碼錯誤');
+      return;
+    }
+    localStorage.setItem('token',JSON.stringify(result));
+    window.location.href='/';
+
+  }
   export default function SimpleCard() {
-    api.signin('a');
+    let inform={
+      email:'',
+      password:'',
+      remember:false
+    }
     return (
       <Flex
         minH={'100vh'}
@@ -34,18 +48,18 @@ import {
             <Stack spacing={4}>
               <FormControl id="email">
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" />
+                <Input type="email" onBlur={(e)=>{inform.email=e.target.value}}/>
               </FormControl>
               <FormControl id="password">
                 <FormLabel>密碼</FormLabel>
-                <Input type="password" />
+                <Input type="password" onBlur={(e)=>{inform.password=e.target.value}}/>
               </FormControl>
               <Stack spacing={10}>
                 <Stack
                   direction={{ base: 'column', sm: 'row' }}
                   align={'start'}
                   justify={'space-between'}>
-                  <Checkbox>記住我</Checkbox>
+                  <Checkbox onChange={(e)=>{inform.remember=e.target.checked}}>記住我</Checkbox>
                   <Link color={'blue.400'}>忘記密碼?</Link>
                 </Stack>
                 <Button
@@ -53,7 +67,8 @@ import {
                   color={'white'}
                   _hover={{
                     bg: 'blue.500',
-                  }}>
+                  }}
+                  onClick={(e)=>{signIn(inform)}}>
                   Sign in
                 </Button>
               </Stack>

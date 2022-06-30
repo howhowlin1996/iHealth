@@ -11,6 +11,7 @@ var videoSocket=require('./server/models/videoSocket');
 var chatSocket=require('./server/models/chatSocket');
 var app = express();
 var userRouter= require('./server/routes/userRouter');
+var clinicRouter=require('./server/routes/getMedicalRouter')
 var API_VERSION=process.env.ApiVersion;
 const cors = require('cors');
 app.use(cors());
@@ -29,7 +30,7 @@ chatSocket;
 //app.use('/', indexRouter);
 app.use('/videoRoom',videoRoomRouter);
 app.use('/chatRoom',chatRoomRouter);
-app.use('/api/'+ API_VERSION,[userRouter]);
+app.use('/api/'+ API_VERSION,[userRouter,clinicRouter]);
 
 
 // catch 404 and forward to error handler

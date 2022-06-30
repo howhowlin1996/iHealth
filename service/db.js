@@ -7,8 +7,10 @@ async function query(sql, params) {
   try{
     if(params===undefined) await connection.execute(sql);
     else  [results, ] = await connection.execute(sql, params);
+   
   }
   catch(err){
+ 
     console.log(err);
     connection.end();
 
@@ -18,7 +20,20 @@ async function query(sql, params) {
   connection.end();
   return results;
 }
+async function transaction(sql) {
+  const db =config['configParams'];                   //get the database parameters
+  let results;
+  const connection = await mysql.createConnection(db);
+  results=await connection.query(sql);
+  
+
+  
+  connection.end();
+  return results;
+  
+}
 
 module.exports = {
-  query
+  query,
+  transaction
 }

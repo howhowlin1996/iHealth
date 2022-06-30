@@ -26,13 +26,17 @@ import {
   import { useState } from 'react';
   import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
   import api from './utils/api'
+  import { createBrowserHistory } from 'history';
 
   async function signUp(data){
       if(data['name']===''||data['email']===''||data['address']===''||data['password']===''||data['birthday']===''){
         alert('資料不齊全');
         return;
       }
-      await api.signup(data);   
+      let msg=await api.signUp(data);   
+      if(msg['status'].includes('dupicate email')) alert('Email 已被使用');
+      if(msg['status']==='success') window.location.href='/signIn';
+      
    
 
   }

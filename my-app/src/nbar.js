@@ -21,8 +21,133 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons';
+import jwt from 'jwt-decode'
 
 export default function WithSubnavigation() {
+    let patientInform=JSON.parse(localStorage.getItem('token'));
+    if(patientInform===null){
+      return(
+        <SignInBar/>
+      );
+    }
+    else{
+      let expired=Date.parse(patientInform['user']['login_at'])+patientInform['user']['access_expired']<Date.parse(new Date());
+      let token=jwt(patientInform['user']['access_token']);
+      let identity=token['identity'];
+      console.log(identity)
+      if(identity==='patient'){
+        return(
+          <PatientBar/>
+        );
+      }
+      
+    }
+    
+  
+
+  
+}
+
+function signOut(){
+  localStorage.removeItem('token');
+  window.location.href='/';
+}
+
+function PatientBar(){
+  const { isOpen, onToggle } = useDisclosure();
+  return (
+  
+    <Box>
+      <Flex
+        bg={useColorModeValue('white', 'gray.800')}
+        color={useColorModeValue('gray.600', 'white')}
+        minH={'60px'}
+        py={{ base: 2 }}
+        px={{ base: 4 }}
+        borderBottom={0}
+        borderStyle={'solid'}
+        borderColor={useColorModeValue('gray.200', 'gray.900')}
+        align={'center'}>
+        <Flex
+          flex={{ base: 1, md: 'auto' }}
+          ml={{ base: -2 }}
+          display={{ base: 'flex', md: 'none' }}>
+          <IconButton
+            onClick={onToggle}
+            icon={
+              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+            }
+            variant={'ghost'}
+            aria-label={'Toggle Navigation'}
+          />
+        </Flex>
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Link href={'/'}>
+          <Image
+            alt={'Logo Image'}
+            objectFit={'cover'}
+            src={
+              './logo.jpg'
+            }
+            h={"100px"}
+          />
+        </Link>
+       
+
+          <Flex display={{ base: 'none', md: 'flex' }}align={'center'} ml={10}>
+            <DesktopNav />
+          </Flex>
+        </Flex>
+
+        <Stack
+          flex={{ base: 1, md: 0 }}
+          justify={'flex-end'}
+          direction={'row'}
+          spacing={6}>
+          <Button
+            as={'a'}
+            display={{ base: 'none', md: 'inline-flex' }}
+            fontSize={'xl'}
+            fontWeight={600}
+            color={'white'}
+            bg={'blue.400'}
+            href={"signIn"}
+            _hover={{
+              bg: 'blue.300',
+            }}>
+            會員資料
+          </Button>
+          <Button
+            as={'a'}
+            display={{ base: 'none', md: 'inline-flex' }}
+            fontSize={'xl'}
+            fontWeight={600}
+            color={'white'}
+            bg={'blue.400'}
+            _hover={{
+              bg: 'blue.300',
+            }} onClick={()=>{signOut()}}>
+            登出
+          </Button>
+        </Stack>
+      </Flex>
+
+      <Collapse in={isOpen} animateOpacity>
+        <MobileNav />
+      </Collapse>
+      <Box bg='blue.400' w='100%' p={4} >
+      </Box>
+    </Box>
+     
+   
+  );
+
+
+
+}
+
+
+function SignInBar(){
   const { isOpen, onToggle } = useDisclosure();
   return (
   
@@ -124,13 +249,17 @@ export default function WithSubnavigation() {
      
    
   );
+
+
+
+
+
 }
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue('gray.600', 'gray.200');
   const linkHoverColor = useColorModeValue('gray.800', 'white');
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
-
   return (
     <Stack direction={'row'} spacing={4}>
       {NAV_ITEMS.map((navItem) => (
@@ -170,7 +299,13 @@ const DesktopNav = () => {
       ))}
     </Stack>
   );
+
+  
+
+  
 };
+
+
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
