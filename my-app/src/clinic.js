@@ -9,7 +9,7 @@ import {
 import NavBar from'./nbar';
 import Footer from './footer';
 import { useLocation} from 'react-router-dom';
-import {getClinicNearBy,getClinicPopular,getDrugStoreNearBy}from'./utils/api';
+import {getClinicNearBy,getClinicPopular,getDrugStoreNearBy }from'./utils/api';
 import { useEffect,useState} from 'react';
 
 export default  function Clinic(){
@@ -48,7 +48,7 @@ export default  function Clinic(){
     },[]);
  
      
-      let clinicInformArray=Object.values(clinicInform);
+     
       if(Object.keys(clinicInform).length===0){
         return(
             <div>
@@ -73,7 +73,7 @@ export default  function Clinic(){
                   </Text>
                   <Stack direction={'column'} align={'center'}> 
                         {clinicInformArray.map((data)=>{
-                            {console.log(data)}
+                          
                             return(
                             <DrugStoreCard key={data['id']} data={data}/>
                             );
@@ -153,7 +153,7 @@ export default  function Clinic(){
           </Box>
   
           <Box  mt='2'>
-            <Text fontWeight={'bold'}>診所科別:</Text> {property. clinicType}
+            <Text fontWeight={'bold'}>診所科別:</Text> {property.clinicType}
           </Box>
   
           <Box  mt='1'>

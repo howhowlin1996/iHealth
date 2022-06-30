@@ -23,7 +23,7 @@
 
   async function getClinicNearBy(data){
     console.log(data);
-    let inform;
+   
     return fetch(`${hostname}/medical/clinic?type=nearby`, {
       body: JSON.stringify(data),
       headers: new Headers({
@@ -41,7 +41,7 @@
   }
 
   async function getDrugStoreNearBy(data){
-    let inform;
+   
     return fetch(`${hostname}/medical/drugStore`, {
       body: JSON.stringify(data),
       headers: new Headers({
