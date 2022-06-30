@@ -1,5 +1,5 @@
 
-  var hostname= 'http://18.236.9.61/api/v1' // By aianlinb
+  var hostname= 'http://localhost:3001/api/v1' // By aianlinb
   function signIn(data) {
     return fetch(`${hostname}/user/signIn?category=patient`, {
       body: JSON.stringify(data),
@@ -32,8 +32,24 @@
       method: 'POST'
     }).then((response) => response.json())
    
-     
+  }
+  async function getClinicPopular(){
+    return fetch(`${hostname}/medical/clinic?type=popular`, {
+      method: 'GET'
+    }).then((response) => response.json())
+   
+  }
 
+  async function getDrugStoreNearBy(data){
+    let inform;
+    return fetch(`${hostname}/medical/drugStore`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST'
+    }).then((response) => response.json())
+   
   }
   
 /*function passwordVerification(email){
@@ -52,5 +68,5 @@ function emailVerification(jwtToken){
 
 
 module.exports={
-  signUp,signIn,getClinicNearBy
+  signUp,signIn,getClinicNearBy,getClinicPopular,getDrugStoreNearBy
 }

@@ -430,7 +430,7 @@ const NAV_ITEMS: Array<NavItem> = [
     children: [
       {
         label: '搜尋附近藥局',
-        href: '#',
+        href: '/clinic?catergory=drugStore',
       },
     ],
   }
