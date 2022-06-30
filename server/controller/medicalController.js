@@ -32,7 +32,7 @@ async function getClinicInform(data,type){
         }
         else {
             try{
-                console.log(data.lat,data.lng,type);
+                
                 let response= await medical.getDrugStore(data);
                 console.log(response);
                 return response;
