@@ -12,7 +12,7 @@ async function getClinicInform(data,type){
                 
             }
             catch(err){
-                return error;
+                return err;
                
             }
            
@@ -26,7 +26,7 @@ async function getClinicInform(data,type){
                 
             }
             catch(err){
-                return error;
+                return err;
                
             }
         }
@@ -39,7 +39,7 @@ async function getClinicInform(data,type){
                 
             }
             catch(err){
-                return error;
+                return err;
                
             }
         }

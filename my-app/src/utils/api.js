@@ -1,5 +1,5 @@
 
-  var hostname= 'https://18.236.9.61/:3000/api/v1' // By aianlinb
+  var hostname= 'http://18.236.9.61:3000/api/v1' // By aianlinb
 
   const api={
     
