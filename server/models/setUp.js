@@ -7,6 +7,10 @@ async function setUp(){
     await db.query(createuserInformTable);
     var createDrugStoreQuery ='CREATE TABLE IF NOT EXISTS drugStore(id BIGINT NOT NULL  AUTO_INCREMENT, name VARCHAR(50) ,location VARCHAR(50),phoneNumber VARCHAR(50), address VARCHAR(100), position POINT, member Boolean,clickTime BIGINT,createDate DATE,insurance BOOLEAN NOT NULL,image VARCHAR(100),PRIMARY KEY(id),UNIQUE(address))'
     await db.query(createDrugStoreQuery);
+    var createAccessTokenTable='CREATE TABLE IF NOT EXISTS accessToken(id BIGINT NOT NULL AUTO_INCREMENT,userId BIGINT NOT NULL,lineAccess VARCHAR(100),primary key(id)) ;'
+    await db.query(createAccessTokenTable);
+    var createReaerveTable='CREATE TABLE IF NOT EXISTS clinicReserve(id BIGINT NOT NULL AUTO_INCREMENT,userId BIGINT NOT NULL,clinicId BIGINT NOT NULL, reserveDay DATETIME NOT NULL, valid BIGINT NOT NULL,primary key(id));';
+    await db.query(createReaerveTable);
 }
 
 

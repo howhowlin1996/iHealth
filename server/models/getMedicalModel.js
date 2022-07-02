@@ -44,9 +44,29 @@ async function getDrugStore(data){
     
 }
 
+async function getIndividual(id,type){
+  let getIndividualSql;
+  if(type==='clinic'){
+        getIndividualSql='select id,name,clinicType,medicalType,phoneNumber,address,image from clinic where id=? '
+  }
+  else{
+      getIndividualSql='select id,name,address,phoneNumber,insurance from drugStore  where id=?'
+  }
+  try{
+    let response=await db.query(getIndividualSql,[id]);
+    return response;
+    }
+    catch(err){
+        console.log(err);
+    }
+
+    
+}
+
 
 module.exports = {
     getNearByClinic,
     getPopularClinic,
-    getDrugStore
+    getDrugStore,
+    getIndividual
 }

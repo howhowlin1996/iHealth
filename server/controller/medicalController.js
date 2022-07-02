@@ -1,7 +1,5 @@
 const medical=require('../models/getMedicalModel');
 
-
-
 async function getClinicInform(data,type){
     console.log(type);
         if(type==='popular'){
@@ -49,8 +47,26 @@ async function getClinicInform(data,type){
 }
 
 
+async function getIndividualInform(id,type){
+    console.log(id,type);
+    try{
+        let response= await medical.getIndividual(parseInt(id),type);
+        console.log(response);
+        return response;
+        
+    }
+    catch(err){
+        return err;
+       
+    }
+
+
+}
+
+
 
 
 module.exports={
-   getClinicInform
+   getClinicInform,
+   getIndividualInform
 }

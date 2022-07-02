@@ -24,5 +24,11 @@ router.post('/medical/drugStore', async function(req, res, next) {
   res.status(200).send({status:response});
 });
 
+router.post('/medical/individualInform', async function(req, res, next) {
+  let response=await medicalController.getIndividualInform(req.body['id'],req.body['type']);
+  console.log(response);
+  res.status(200).send(response);
+});
+
 
 module.exports = router;

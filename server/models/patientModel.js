@@ -50,10 +50,13 @@ const nativeSignIn = async (email, password,remember) => {
         const loginAt = new Date();
         const accessToken = jwt.sign({
             identity:'patient',
+            id:users['id'],
             name: users['name'],
-            email: users['email']
-        }, TokenSecret);
+            email: users['email'],
+            gender:users['gender'],
+            birthday:users['birthday'],
 
+        }, TokenSecret);
         user.access_token = accessToken;
         user.login_at = loginAt;
         if(remember===true)user.access_expired = TokenExpire;

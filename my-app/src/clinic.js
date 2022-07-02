@@ -53,8 +53,9 @@ export default  function Clinic(){
      
       if(Object.keys(clinicInform).length===0){
         return(
-            <div>
-            </div>
+          <div>
+          <img src='loading.gif' alt="loading..." style={{marginLeft:'auto',marginRight:'auto'}} />
+         </div> 
         )
 
       }
@@ -138,37 +139,40 @@ export default  function Clinic(){
   
     return (
       <Stack maxW='60%'borderWidth='1px' borderRadius='lg' overflow='hidden'direction={'row'} mt={'10px'} mb={'10px'}>
-        <Flex width='50%'>
+        <Flex width='60%'>
           <Image src={property.imageUrl} alt={property.imageAlt}  />
         </Flex>
-        <Flex>
+        <Flex width='40%'>
         <Box p='6'>
 
           <Box
             mt='1'
             fontWeight='bold'
-            fontSize='xl'
+            fontSize='2xl'
             lineHeight='tight'
             noOfLines={1}
           >
             {property.title}
           </Box>
   
-          <Box  mt='2'>
-            <Text fontWeight={'bold'}>診所科別:</Text> {property.clinicType}
+          <Box  mt='3'>
+            <Text fontWeight={'bold'} fontSize={'xl'}mb={'2'}>診所科別:</Text>
+            <Text fontSize={'l'}ml={'2'}>{property.clinicType}</Text>  
           </Box>
   
-          <Box  mt='1'>
-            <Text fontWeight={'bold'}>地址:</Text>{property.address}
+          <Box  mt='3'>
+            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>地址:</Text>
+            <Text fontSize={'l'}ml={'2'}>{property.address}</Text>  
           </Box>
 
-          <Box  mt='1'>
-            <Text fontWeight={'bold'}>電話:</Text>{property.phoneNumber}
+          <Box  mt='3'>
+            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>電話:</Text>
+            <Text fontSize={'l'}ml={'2'}>{property.phoneNumber}</Text>  
           </Box>
 
           
 
-          <Box align={'right'} mt='1'>
+          <Box align={'right'} mt='3'>
             <Button
               bg={'blue.400'}
               as={'a'}
@@ -203,7 +207,7 @@ export default  function Clinic(){
     
       return (
         <Stack maxW='60%'borderWidth='1px' borderRadius='lg' overflow='hidden'direction={'row'} mt={'10px'} mb={'10px'}>
-          <Flex width='50%'>
+          <Flex width='60%'>
             <Image src={property.imageUrl} alt={property.imageAlt}  />
           </Flex>
           <Flex>
@@ -212,7 +216,7 @@ export default  function Clinic(){
             <Box
               mt='1'
               fontWeight='bold'
-              fontSize='xl'
+              fontSize='2xl'
               lineHeight='tight'
               noOfLines={1}
             >
@@ -220,20 +224,23 @@ export default  function Clinic(){
             </Box>
     
             
-            <Box  mt='1'>
-              <Text fontWeight={'bold'}>地址:</Text>{property.address}
+            <Box  mt='3'>
+              <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>地址:</Text>
+              <Text fontSize={'l'}ml={'2'}> {property.address}</Text> 
             </Box>
   
-            <Box  mt='1'>
-              <Text fontWeight={'bold'}>電話:</Text>{property.phoneNumber}
+            <Box  mt='3'>
+              <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>電話:</Text>
+              <Text fontSize={'l'}ml={'2'}> {property.phoneNumber}</Text> 
             </Box>
-            <Box  mt='1'>
-              <Text fontWeight={'bold'}>是否為健保特約藥局:</Text>{property.insurance===1?'是':'否'}
+            <Box  mt='3'>
+              <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>是否為健保特約藥局:</Text>
+              <Text fontSize={'l'}ml={'2'}>  {property.insurance===1?'是':'否'}</Text>
             </Box>
   
             
   
-            <Box align={'right'} mt='1'>
+            <Box align={'right'} mt='3'>
               <Button
                 bg={'blue.400'}
                 as={'a'}

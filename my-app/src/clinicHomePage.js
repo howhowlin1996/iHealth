@@ -7,24 +7,106 @@ import {
     Text,
     Box
   } from '@chakra-ui/react';
-  import{ useState}from 'react'
+  import{ useState,useEffect}from 'react'
   import NavBar from'./nbar';
   import Footer from './footer';
-  export default function SplitScreen() {
+  import { useLocation} from 'react-router-dom';
+  import api from'./utils/api'
+  import jwt from 'jwt-decode';
+  
+  async function createReserve(clientId){
+    console.log(clientId);
+    let patientInform=JSON.parse(localStorage.getItem('token'));
+    if(patientInform===null){
+      window.location.href='/signIn'
+    }
+    else{
+      let expired=Date.parse(patientInform['user']['login_at'])+patientInform['user']['access_expired']<Date.parse(new Date());
+      let token=jwt(patientInform['user']['access_token']);
+      let identity=token['identity'];
+      let patientId=token['id']
+      if(identity==='patient'){
+        let waiting=await api.insertClinicReserve({userId:patientId,clientId:parseInt(clientId)});
+        return waiting['response']['num'];
+        
+      }
+      
+    }
+
+   
+  }
+
+
+
+  export default function ClinicHomePage() {
+    const search = useLocation().search;
+    
+    var type = new URLSearchParams(search).get('type');
+    var id = new URLSearchParams(search).get('id');
+    //console.log(type,id);
+    const [clinicInform, setclinicInform] = useState({});
+    useEffect(() => {
+        async function getInform(){
+            let response=await api.getIndividualInform({id:id,type:type});
+            setclinicInform(response);
+        }
+        getInform();
+    },[]);
+    if(Object.keys(clinicInform).length===0){
+        return(
+            <div>
+            <img src='loading.gif' alt="loading..." style={{marginLeft:'auto',marginRight:'auto'}} />
+           </div> 
+        );
+        
+
+    }
+    else if (type==='clinic'){
+        return(
+            <ClinicCard data={clinicInform} id={id}/>
+        );
+
+    }
+    else{
+        return(
+            <DrugStoreCard data={clinicInform} id={id}/>
+        );
+
+    }
+   
+    
+  }
+
+
+
+  function ClinicCard(props){
     const [reserve,setReserve]=useState('我要預約');
+    
+   
+    //console.log(props.id)
     const property = {
         imageUrl: 'https://www.kantfamilyclinic.com/upload/images/P1010472.JPG',
         imageAlt: 'Clinic information',
-        title: '康德診所',
-        address:'新竹市東區新莊里光復路一段362之2號',
-        phoneNumber:'03-5788282',
+        title: props.data[0]['name'],
+        address:props.data[0]['address'],
+        phoneNumber:props.data[0]['phoneNumber'],
         physicalCheckUp:'門診診療,兒童預防保健,成人預防保健,定量免疫法糞便潛血檢查',
-        profession:'不分科',
+        medicalType:props.data[0]['medicalType'],
         time:'星期一到星期五8:00~21:00',
-        patientNum:2
+        patientNum:'資料讀取中'
       
       }
     const [reserveNum,setReserveNum]=useState(property.patientNum);
+    useEffect(() => {
+        async function getReserveNum(){
+            setInterval(async() => {
+                let response=await api. getClinicReserve(props.id);
+                setReserveNum(response['response']['num']);
+              }, 1000);
+          
+        }
+        getReserveNum();
+    },[]);
     return (
     <Stack direction={'column'}> 
         <NavBar/>
@@ -52,39 +134,36 @@ import {
                         <br />{' '}
                         </Heading>
                         <Box  mt='2'>
-                            <Text fontWeight={'bold'}>科別:</Text> {property.profession}
+                            
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>診所類別:</Text>
+                            <Text fontSize={'l'}ml={'2'}>{property.medicalType}</Text> 
                         </Box>
                 
                         <Box  mt='1'>
-                            <Text fontWeight={'bold'}>地址:</Text>{property.address}
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>地址:</Text>
+                            <Text fontSize={'l'}ml={'2'}> {property.address}</Text> 
                         </Box>
 
                         <Box  mt='1'>
-                            <Text fontWeight={'bold'}>電話:</Text>{property.phoneNumber}
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>電話:</Text>
+                            <Text fontSize={'l'}ml={'2'}>{property.phoneNumber}</Text> 
                         </Box>
 
                         <Box  mt='1'>
-                            <Text fontWeight={'bold'}>服務項目:</Text>{property.physicalCheckUp}
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>服務項目:</Text>
+                            <Text fontSize={'l'}ml={'2'}>{property.physicalCheckUp}</Text> 
                         </Box>
                         <Box  mt='1'>
-                            <Text fontWeight={'bold'}>看診時間:</Text>{property.time}
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>看診時間:</Text>
+                            <Text fontSize={'l'}ml={'2'}>{property.time}</Text> 
                         </Box>
 
                         <Box  mt='1'>
-                            <Text fontWeight={'bold'}>等待人數: </Text>{reserveNum}
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>等待人數:</Text>
+                            <Text fontSize={'l'}ml={'2'}>{reserveNum}</Text> 
                         </Box>
 
-                        <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
-                        <Button
-                            rounded={'full'}
-                            bg={'blue.400'}
-                            color={'white'}
-                            _hover={{
-                            bg: 'blue.500',
-                            }}>
-                            查看預約狀況
-
-                        </Button>
+                        <Stack direction={{ base: 'column', md: 'row' }} spacing={4} justify={'right'}>
                         <Button
                             rounded={'full'}
                             bg={'blue.400'}
@@ -92,11 +171,11 @@ import {
                             _hover={{
                             bg: 'blue.500',
                             }}
-                            onClick={()=>{
+                            onClick={async()=>{
                                 if(reserve==='我要預約'){
                                     alert('預約成功');
                                     setReserve('我要解除預約');
-                                    setReserveNum(reserveNum+1);
+                                    setReserveNum(await createReserve(props.id));
                                 }
                                 else{
                                     alert('解除成功');
@@ -105,18 +184,6 @@ import {
                                 }
                             }}>
                             {reserve}
-
-                        </Button>
-                        <Button
-                            rounded={'full'}
-                            as={'a'}
-                            href={'/videoChat?token=1234'}
-                            bg={'blue.400'}
-                            color={'white'}
-                            _hover={{
-                            bg: 'blue.500',
-                            }}>
-                            進行看診
 
                         </Button>
                         </Stack>
@@ -181,4 +248,112 @@ import {
         </Stack>
 
     );
+
+
+
+
+
+  }
+
+
+
+
+  function DrugStoreCard(props){
+    const [reserve,setReserve]=useState('我要預約');
+    //console.log(props.data[0])
+    const property = {
+        imageUrl: 'https://www.kantfamilyclinic.com/upload/images/P1010472.JPG',
+        imageAlt: 'Clinic information',
+        title: props.data[0]['name'],
+        address:props.data[0]['address'],
+        phoneNumber:props.data[0]['phoneNumber'],
+        time:'星期一到星期五8:00~21:00',
+        patientNum:2
+      
+      }
+    const [reserveNum,setReserveNum]=useState(property.patientNum);
+    return (
+    <Stack direction={'column'}> 
+        <NavBar/>
+            <Stack direction={'column'}>
+                <Stack minH={'30%'}maxH={'50%'} direction={{ base: 'column', md: 'row' }} width={'60%'} alignSelf={'center'}>
+                    <Flex flex={1}>
+                        <Image
+                            alt={'Login Image'}
+                            objectFit={'cover'}
+                            src={
+                            'https://www.kantfamilyclinic.com/upload/images/P1010472.JPG'
+                            }
+                        />
+                        
+                    </Flex>
+                    <Flex p={8} flex={1} align={'center'} justify={'center'}>
+                    <Stack spacing={6} w={'full'} maxW={'lg'}>
+                        <Heading fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}>
+                        <Text
+                            as={'span'}
+                            position={'relative'}
+                          >
+                            {property.title}
+                        </Text>
+                        <br />{' '}
+                        </Heading>
+                
+                        <Box  mt='1'>
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>地址:</Text>
+                            <Text fontSize={'l'}ml={'2'}> {property.address}</Text> 
+                        </Box>
+
+                        <Box  mt='1'>
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>電話:</Text>
+                            <Text fontSize={'l'}ml={'2'} > {property.phoneNumber}</Text> 
+                        </Box>
+
+                        <Box  mt='1'>
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>營業時間:</Text>
+                            <Text fontSize={'l'}ml={'2'}> {property.time}</Text> 
+                        </Box>
+
+                        <Box  mt='1'>
+                            <Text fontWeight={'bold'} fontSize={'xl'} mb={'2'}>等待人數:</Text>
+                            <Text fontSize={'l'}ml={'2'}> {property. patientNum}</Text> 
+                        </Box>
+
+                        <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
+                        <Button
+                            rounded={'full'}
+                            bg={'blue.400'}
+                            color={'white'}
+                            _hover={{
+                            bg: 'blue.500',
+                            }}
+                            onClick={()=>{
+                                if(reserve==='我要預約'){
+                                    alert('預約成功');
+                                    setReserve('我要解除預約');
+                                    setReserveNum(reserveNum+1);
+                                }
+                                else{
+                                    alert('解除成功');
+                                    setReserve('我要預約');
+                                    setReserveNum(reserveNum-1);
+                                }
+                            }}>
+                            {reserve}
+
+                        </Button>
+                        </Stack>
+                    </Stack>
+                    </Flex>
+                </Stack>
+            </Stack>
+        <Footer/>
+        </Stack>
+
+    );
+
+
+
+
+
   }

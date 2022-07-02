@@ -8,6 +8,7 @@ import Clinic from './clinic';
 import VideoChat from'./videoChat';
 import ClinicHomePage from './clinicHomePage';
 import reportWebVitals from './reportWebVitals';
+import MemberInform from './memberInformation';
 import { ChakraProvider } from '@chakra-ui/react'
 import {Routes,Route, BrowserRouter}from "react-router-dom";
 
@@ -48,6 +49,12 @@ root.render(
           <Route path ="/videoChat" element={ 
           <ChakraProvider>
             <VideoChat/>
+          </ChakraProvider>} 
+        />
+
+        <Route path ="/memberInform" element={ 
+          <ChakraProvider>
+            <MemberInform/>
           </ChakraProvider>} 
         />
          

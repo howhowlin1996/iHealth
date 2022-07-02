@@ -9,6 +9,7 @@ import {
     useColorModeValue,
   } from '@chakra-ui/react';
   import { useEffect } from 'react';
+  import jwt from 'jwt-decode'
  
   
 function VideoButton(){
@@ -160,7 +161,21 @@ function MedicalForm(){
 
 
   export default function VideoChat(){
-      
+        let patientInform=JSON.parse(localStorage.getItem('token'));
+        let identity;
+        if(patientInform===null){
+            window.location.href='/signIn'
+            alert('請先登入')
+        }
+        else{
+            let expired=Date.parse(patientInform['user']['login_at'])+patientInform['user']['access_expired']<Date.parse(new Date());
+            let token=jwt(patientInform['user']['access_token']);
+            identity=token['identity'];
+            /*if(expired){
+                window.location.href='/signIn'
+                alert('請先登入')
+            }*/
+        }
        useEffect(() => {
         const script = document.createElement('script');
         script.src = "./video.js";
@@ -172,29 +187,79 @@ function MedicalForm(){
           document.body.removeChild(script);
         }
       }, []);
-        return(
-            <Stack direction={'column'}>
-                 <VideoButton/>
-               
-                <Stack direction={'row'} > 
-                    <Box w="60%" verticalAlign={"center"}>
-                        <video 
-                        style={{ width:"60%"
-                        ,zIndex:"auto",position:"absolute",aspectRatio:"1.33"}}autoPlay id="myVideo"
-                        playsInline ></video>
+        if(identity==='patient'){
+            return(
+              
+                <PatientVideo/>
+            );
+        }
+        else{
+            return(
+              
+                <DoctorVideo/>
+            );
 
-                        <video style={{ width:"20%"
-                        ,zIndex:"auto",position:"absolute",aspectRatio:"1.33"}}
-                        autoPlay playsInline id="remoteVideo"
-                       ></video>
+        }
+        
+  }
 
-                    </Box>
-                    <Box align={"center"} w="40%" style={{aspectRatio:"0.8",overflowY:"scroll"}} >                        
-                        <MedicalForm />
-                    </Box>
-                </Stack>
-                 
-            </Stack>     
-  
-        );
+  function DoctorVideo(){
+    return(
+        <Stack direction={'column'}>
+             <VideoButton/>
+           
+            <Stack direction={'row'} > 
+                <Box w="60%" verticalAlign={"center"}>
+                    <video 
+                    style={{ width:"60%"
+                    ,zIndex:"auto",position:"absolute",aspectRatio:"1.33",background:"black"}}autoPlay id="remoteVideo"
+                    playsInline ></video>
+
+                    <video style={{ width:"20%"
+                    ,zIndex:"auto",position:"absolute",aspectRatio:"1.33",background:"black"}}
+                    autoPlay playsInline id="myVideo"
+                   ></video>
+
+                </Box>
+                <Box align={"center"} w="40%" style={{aspectRatio:"0.8",overflowY:"scroll"}} >                        
+                    <MedicalForm />
+                </Box>
+            </Stack>
+             
+        </Stack>     
+
+    );
+
+
+
+  }
+
+
+  function PatientVideo(){
+    return(
+        <Stack direction={'column'}>
+             <VideoButton/>
+           
+            <Stack direction={'row'} > 
+                <Box ml={'20%'}>
+                <video 
+                    style={{ width:"60%"
+                    ,zIndex:"auto",position:"absolute",aspectRatio:"1.33",background:"black",backgroundRepeat:"no-repeat",backgroundSize:"cover"}}autoPlay id="remoteVideo"
+                    playsInline ></video>
+
+                    <video style={{ width:"20%"
+                    ,zIndex:"auto",position:"absolute",aspectRatio:"1.33",background:"black"}}
+                    autoPlay playsInline id="myVideo"
+                   ></video>
+
+                </Box>
+                
+            </Stack>
+             
+        </Stack>     
+
+    );
+
+
+
   }

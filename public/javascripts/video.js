@@ -10,7 +10,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 let offer;
 let pc;
-let url = 'ws://localhost:3000?token='+urlParams.get("token");
+let url = 'ws://localhost:3001?token='+urlParams.get("token");
 var ws = new WebSocket(url)
 ws.onopen = () => {
   console.log('open connection')
@@ -19,6 +19,9 @@ ws.onopen = () => {
 ws.onclose = () => {
   console.log('close connection');
 }
+myVideo.srcObject=null;
+remoteVideo.srcObject=null;
+console.log('hahahaha');
 
 
 

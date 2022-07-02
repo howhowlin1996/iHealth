@@ -10,9 +10,8 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 let offer;
 let pc;
-let url = 'ws://localhost:8081?token='+urlParams.get("token");
+let url = 'ws://localhost:3001?token='+urlParams.get("token");
 var ws = new WebSocket(url)
-console.log('here');
 ws.onopen = () => {
   console.log('open connection')
 }
@@ -20,6 +19,7 @@ ws.onopen = () => {
 ws.onclose = () => {
   console.log('close connection');
 }
+
 
 
 
@@ -53,7 +53,7 @@ function createPeerConnection() {
 async function createMedia() {
   // 儲存本地流到全域
   localstream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-  console.log(localstream);
+  //console.log(localstream);
   myVideo.srcObject = localstream;
   getAudioVideo();
   
@@ -66,10 +66,10 @@ function getAudioVideo() {
   const audio = localstream.getAudioTracks();
 
   if (video.length > 0) {
-    console.log(`使用影像裝置 => ${video[0].label}`)
+    //console.log(`使用影像裝置 => ${video[0].label}`)
   };
   if (audio.length > 0) {
-    console.log(`使用聲音裝置 => ${audio[0].label}`)
+    //console.log(`使用聲音裝置 => ${audio[0].label}`)
   };
 }
 // 增加本地流
@@ -93,6 +93,7 @@ function onIceCandidates() {
       date: Date.now()
     };
     ws.send(JSON.stringify(msg));
+    document.querySelector('#remoteVideo').style.backgroundImage="url('loading.gif')";
   };
 };
 
@@ -111,7 +112,8 @@ function onIceconnectionStateChange() {
 function onAddStream() {
   pc.onaddstream = (event) => {
     console.log(remoteVideo.srcObject);
-    if(!remoteVideo.srcObject && event.stream){
+    if(event.stream){
+      document.querySelector('#remoteVideo').style.backgroundImage=null;
       remoteVideo.srcObject = event.stream;
       console.log('接收流並顯示於遠端視訊！', event);
       
@@ -188,6 +190,7 @@ function call(){
   onIceconnectionStateChange();
   onAddStream();
   createSignal(true);
+ 
 }
 
 function hangUp(){

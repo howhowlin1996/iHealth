@@ -13,7 +13,8 @@ import {
   PopoverContent,
   useColorModeValue,
   useDisclosure,
-  Image
+  Image,
+  Badge
 } from '@chakra-ui/react';
 import {
   HamburgerIcon,
@@ -21,8 +22,9 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons';
-import jwt from 'jwt-decode'
-
+import jwt from 'jwt-decode';
+import{ useState,useEffect}from 'react';
+import api from'./utils/api';
 export default function WithSubnavigation() {
     let patientInform=JSON.parse(localStorage.getItem('token'));
     if(patientInform===null){
@@ -34,10 +36,10 @@ export default function WithSubnavigation() {
       let expired=Date.parse(patientInform['user']['login_at'])+patientInform['user']['access_expired']<Date.parse(new Date());
       let token=jwt(patientInform['user']['access_token']);
       let identity=token['identity'];
-      console.log(identity)
+      //console.log(token)
       if(identity==='patient'){
         return(
-          <PatientBar/>
+          <PatientBar data={token}/>
         );
       }
       
@@ -53,8 +55,19 @@ function signOut(){
   window.location.href='/';
 }
 
-function PatientBar(){
+function PatientBar(props){
+  console.log(props.data['name']);
   const { isOpen, onToggle } = useDisclosure();
+  const[reserveNum,setReserveNum]=useState(0);
+  useEffect(() => {
+    async function getInform(){
+        let response=await api.getIndividualTotal(props.data['id']);
+
+        setReserveNum(response['response']['num']);
+        console.log(response['response']['num']);
+    }
+    getInform();
+},[]);
   return (
   
     <Box>
@@ -111,7 +124,22 @@ function PatientBar(){
             fontWeight={600}
             color={'white'}
             bg={'blue.400'}
-            href={"signIn"}
+            href={"memberInform"}
+            _hover={{
+              bg: 'blue.300',
+            }}>
+            等待看診 <Badge ml='2' fontSize='0.8em' colorScheme='red'>
+                    {reserveNum}
+                    </Badge>
+          </Button>
+          <Button
+            as={'a'}
+            display={{ base: 'none', md: 'inline-flex' }}
+            fontSize={'xl'}
+            fontWeight={600}
+            color={'white'}
+            bg={'blue.400'}
+            href={"memberInform"}
             _hover={{
               bg: 'blue.300',
             }}>
@@ -362,7 +390,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
       <Flex
         py={2}
         as={Link}
-        href={href ?? 'signUp'}
+        href={href }
         justify={'space-between'}
         align={'center'}
         _hover={{
