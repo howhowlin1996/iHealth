@@ -347,19 +347,7 @@ function SignInBar(){
           justify={'flex-end'}
           direction={'row'}
           spacing={6}>
-          <Button
-            as={'a'}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'xl'}
-            fontWeight={600}
-            color={'white'}
-            bg={'blue.400'}
-            href={"clinicSignIn"}
-            _hover={{
-              bg: 'blue.300',
-            }}>
-            診所登入
-          </Button>
+         
           <Button
             as={'a'}
             display={{ base: 'none', md: 'inline-flex' }}
