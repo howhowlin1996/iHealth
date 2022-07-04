@@ -72,7 +72,7 @@ import {
                       </Stack>
                   
                   
-                    <Footer/>
+                    <Footer />
                 </Stack>
             );
 
@@ -104,9 +104,9 @@ import {
       },[]);
         if(reserveinform.length===0){
             return(
-                <div>
-                <img src='loading.gif' alt="loading..." style={{marginLeft:'auto',marginRight:'auto'}} />
-               </div>                 
+                <div style={{align:'center',fontSize:'24px'}}>
+                        <h1>目前暫無預約資料</h1>
+               </div>                  
 
             );
 
@@ -179,9 +179,9 @@ import {
       },[]);
         if(reserveinform.length===0){
             return(
-                <div>
-                <img src='loading.gif' alt="loading..." style={{marginLeft:'auto',marginRight:'auto'}} />
-               </div>                 
+                <div style={{align:'center',fontSize:'24px'}}>
+                    <h1>目前暫無預約資料</h1>
+                </div>                
 
             );
 

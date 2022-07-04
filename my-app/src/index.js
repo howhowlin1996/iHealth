@@ -11,6 +11,7 @@ import WaitingPage from'./waitingPage';
 import reportWebVitals from './reportWebVitals';
 import MemberInform from './memberInformation';
 import ClinicSignIn from './clinicSignIn';
+import IndividualRecord from './individualRecord';
 import { ChakraProvider } from '@chakra-ui/react'
 import {Routes,Route, BrowserRouter}from "react-router-dom";
 
@@ -67,6 +68,11 @@ root.render(
          <Route path ="/clinicSignIn" element={ 
           <ChakraProvider>
             <ClinicSignIn/>
+          </ChakraProvider>} 
+        />
+        <Route path ="/individualRecord" element={ 
+          <ChakraProvider>
+            <IndividualRecord/>
           </ChakraProvider>} 
         />
          

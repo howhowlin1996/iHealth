@@ -63,7 +63,7 @@ export default  function Clinic(){
          let clinicInformArray=clinicInform['status'];
          if(name==='drugStore'){
             return(
-              <Stack direction={'column'}> 
+              <Stack direction={'column'} mb={'50px'}> 
                   <NavBar/>
                   <Text
                     as={'h1'}
@@ -74,7 +74,7 @@ export default  function Clinic(){
                     {'附近藥局'}
                   
                   </Text>
-                  <Stack direction={'column'} align={'center'}> 
+                  <Stack direction={'column'} align={'center'} > 
                         {clinicInformArray.map((data)=>{
                           
                             return(
@@ -92,7 +92,7 @@ export default  function Clinic(){
          }
          else{
             return(
-              <Stack direction={'column'}> 
+              <Stack direction={'column'} mb={'50px'}> 
                   <NavBar/>
                   <Text
                     as={'h1'}
@@ -103,7 +103,7 @@ export default  function Clinic(){
                     {name==='popular' ? '熱門診所':'附近診所'}
                   
                   </Text>
-                  <Stack direction={'column'} align={'center'}> 
+                  <Stack direction={'column'} align={'center'} > 
                         {clinicInformArray.map((data)=>{
                             return(
                                 <ClinicCard key={data['id']} data={data}/>

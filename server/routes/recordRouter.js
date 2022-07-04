@@ -9,5 +9,11 @@ router.post('/record/insert', async function(req, res, next) {
   res.status(200).send({status:response});
 });
 
+router.get('/record/get', async function(req, res, next) {
+  console.log(req.query.id,'here');
+  let response=await userController.getRecord(req.query.id);
+  res.status(200).send(response);
+});
+
 
 module.exports = router;

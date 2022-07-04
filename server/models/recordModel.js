@@ -13,7 +13,7 @@ async function insertRecord(record,id){
             const formData = new FormData();
             formData.append('stickerId','1988');
             formData.append('stickerPackageId','446');
-            formData.append('message','處方簽請點連結:https://18.236.9.61/');
+            formData.append('message','處方簽請點連結:https://18.236.9.61/individualRecord?id='+id);
            
             //console.log(token)
             let msg=await fetch(`https://notify-api.line.me/api/notify`, {
@@ -33,8 +33,24 @@ async function insertRecord(record,id){
 
 
 }
+async function getRecord(id){
+  console.log(id);
+  var selectRecord='SELECT record from clinicReserve where id=?;'
+  try {
+      let response=await db.query(selectRecord,[id]);
+      return response[0]['record'];
+     
+     
+      
+  }
+  catch(err){
+      console.log(err);
+  }
 
+
+}
 
 module.exports = {
-  insertRecord
+  insertRecord,
+  getRecord
 }

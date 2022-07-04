@@ -48,7 +48,9 @@ function VideoButton(){
                   bg: 'blue.500',
                   }}
                   className="endCall"
-                  ml={'10px'}>
+                  ml={'10px'}
+                  as={'a'}
+                  href={'/waitingPage'}>
                   結束看診
               </Button >
         </Box>
@@ -169,7 +171,7 @@ function MedicalForm(){
                           _hover={{
                             bg: 'blue.500',
                           }}
-                          onClick={async ()=>{await sendRecord(record,id)}}>
+                          onClick={async ()=>{await sendRecord(medicalRecord,id)}}>
                           
                          送出診斷
                         </Button>

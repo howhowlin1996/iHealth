@@ -140,7 +140,7 @@ function PatientBar(props){
               bg: 'blue.300',
             }}>
             等待看診 <Badge ml='2' fontSize='0.8em' colorScheme='red'>
-                    {reserveNum!=0?reserveNum:''}
+                    {reserveNum!=0?reserveNum:0}
                     </Badge>
           </Button>
           <Button
@@ -243,7 +243,7 @@ function ClinicBar(props){
            
           </Flex>
         </Flex>
-        <Text mr='10' fontSize={'xl'} fontWeight={600}>{props.data['clinicName']} 您好</Text>
+        <Text mr='10' fontSize={'xl'} fontWeight={600}>{props.data['clinicName']}</Text>
         <Stack
           flex={{ base: 1, md: 0 }}
           justify={'flex-end'}
@@ -262,7 +262,7 @@ function ClinicBar(props){
               bg: 'blue.300',
             }}>
             等待看診 <Badge ml='2' fontSize='0.8em' colorScheme='red'>
-                    {reserveNum!=0?reserveNum:''}
+                    {reserveNum!=0?reserveNum:0}
                     </Badge>
           </Button>
           <Button

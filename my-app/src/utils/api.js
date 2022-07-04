@@ -182,6 +182,16 @@
       method: 'POST'
     }).then((response) => response.json())
    
+  },
+  getMedicalRecord:async function getMedicalRecord(id){
+    console.log(id);
+    return fetch(`${this.hostname}/record/get?id=`+id, {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'GET'
+    }).then((response) => response.json())
+   
   }
 
 

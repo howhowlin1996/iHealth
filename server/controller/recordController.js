@@ -19,9 +19,26 @@ async function insertRecord(record,id){
 
 }
 
+async function getRecord(id){
+    console.log(id);
+    try{
+        let response= await medical.getRecord(id);
+        console.log(response);
+        return response;
+        
+    }
+    catch(err){
+        return err;
+       
+    }
+
+
+}
+
 
 
 
 module.exports={
-  insertRecord
+  insertRecord,
+  getRecord
 }
