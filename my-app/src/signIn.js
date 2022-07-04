@@ -15,13 +15,25 @@ import {
   import api from './utils/api.js'
   
   async function signIn(inform){
-    let result= await api.signIn(inform);
-    if(result['error']!==undefined) {
+    console.log(inform);
+    let patientResult= await api.signIn(inform);
+    let clinicResult= await api.clinicSignIn(inform);
+    console.log(patientResult,clinicResult);
+    if(patientResult['error']!==undefined&&clinicResult['error']!=undefined) {
       alert('密碼錯誤');
       return;
     }
-    localStorage.setItem('token',JSON.stringify(result));
-    window.location.href='/';
+    else if(patientResult['error']!==undefined){
+      localStorage.setItem('token',JSON.stringify(clinicResult));
+       window.location.href='/';
+
+    }
+    else {
+      localStorage.setItem('token',JSON.stringify(patientResult));
+       window.location.href='/';
+
+    }
+    
 
   }
   export default function SimpleCard() {
