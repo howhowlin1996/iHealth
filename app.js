@@ -37,10 +37,10 @@ app.use(express.static(indexPath));
 app.use('/videoRoom',videoRoomRouter);
 app.use('/chatRoom',chatRoomRouter);
 app.use('/api/'+ API_VERSION,[userRouter,clinicRouter,lineNotifyRouter,reserveRouter,recordRouter]);
-/*app.get('*', function (req,res) {
+app.get('*', function (req,res) {
   //console.log(indexPath);
   res.sendFile(indexPath + "index.html");
-});*/
+});
 
 
 // catch 404 and forward to error handler

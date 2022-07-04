@@ -4,7 +4,7 @@
 
   const api={
   //hostname:'http://localhost:3001/api/v1', 
-  hostname= 'https://18.236.9.61/api/v1',
+  hostname:'https://18.236.9.61/api/v1',
   redirect_uri:'https://18.236.9.61/memberInform', 
   signIn:function signIn(data) {
     return fetch(`${this.hostname}/user/signIn?category=patient`, {
