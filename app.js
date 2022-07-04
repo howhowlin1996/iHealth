@@ -13,7 +13,8 @@ var app = express();
 var userRouter= require('./server/routes/userRouter');
 var clinicRouter=require('./server/routes/getMedicalRouter');
 var lineNotifyRouter=require('./server/routes/lineNotifyRouter');
-var reserveRouter=require('./server/routes/reserveRouter')
+var reserveRouter=require('./server/routes/reserveRouter');
+var recordRouter=require('./server/routes/recordRouter');
 var API_VERSION=process.env.ApiVersion;
 const cors = require('cors');
 app.use(cors());
@@ -35,7 +36,7 @@ app.use(express.static(indexPath));
 //app.use('/', indexRouter);
 app.use('/videoRoom',videoRoomRouter);
 app.use('/chatRoom',chatRoomRouter);
-app.use('/api/'+ API_VERSION,[userRouter,clinicRouter,lineNotifyRouter,reserveRouter]);
+app.use('/api/'+ API_VERSION,[userRouter,clinicRouter,lineNotifyRouter,reserveRouter,recordRouter]);
 /*app.get('*', function (req,res) {
   //console.log(indexPath);
   res.sendFile(indexPath + "index.html");

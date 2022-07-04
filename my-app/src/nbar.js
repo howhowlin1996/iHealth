@@ -25,8 +25,11 @@ import {
 import jwt from 'jwt-decode';
 import{ useState,useEffect}from 'react';
 import api from'./utils/api';
-export default function WithSubnavigation() {
+export default function WithSubnavigation(props) {
+  
     let patientInform=JSON.parse(localStorage.getItem('token'));
+    let chaneReserve=0;
+    if(props.reserveNum!==undefined&&props.reserveNum!==0) console.log(props.reserveNum);
     if(patientInform===null){
       return(
         <SignInBar/>
@@ -39,8 +42,14 @@ export default function WithSubnavigation() {
       //console.log(token)
       if(identity==='patient'){
         return(
-          <PatientBar data={token}/>
+          <PatientBar data={token} changeReserve={props.reserveNum}/>
         );
+      }
+      else{
+        return(
+          <ClinicBar data={token}/>
+        );
+        
       }
       
     }
@@ -56,18 +65,20 @@ function signOut(){
 }
 
 function PatientBar(props){
-  console.log(props.data['name']);
+  
   const { isOpen, onToggle } = useDisclosure();
   const[reserveNum,setReserveNum]=useState(0);
+  //console.log(props.changeReserve);
+
   useEffect(() => {
     async function getInform(){
         let response=await api.getIndividualTotal(props.data['id']);
 
         setReserveNum(response['response']['num']);
-        console.log(response['response']['num']);
+        //console.log(response['response']['num']);
     }
     getInform();
-},[]);
+},[props.changeReserve]);
   return (
   
     <Box>
@@ -124,12 +135,12 @@ function PatientBar(props){
             fontWeight={600}
             color={'white'}
             bg={'blue.400'}
-            href={"memberInform"}
+            href={"waitingPage"}
             _hover={{
               bg: 'blue.300',
             }}>
             等待看診 <Badge ml='2' fontSize='0.8em' colorScheme='red'>
-                    {reserveNum}
+                    {reserveNum!=0?reserveNum:''}
                     </Badge>
           </Button>
           <Button
@@ -173,6 +184,116 @@ function PatientBar(props){
 
 
 }
+
+function ClinicBar(props){
+  
+  const { isOpen, onToggle } = useDisclosure();
+  const[reserveNum,setReserveNum]=useState(0);
+  //console.log(props.changeReserve);
+  console.log(props.data);
+  useEffect(() => {
+    async function getInform(){
+        let response=await api.getClinicReserve(props.data['clinicId']);
+        setReserveNum(response['response']['num']);
+        //console.log(response['response']['num'])
+    }
+    getInform();
+},[]);
+    
+  return (
+  
+    <Box>
+      <Flex
+        bg={useColorModeValue('white', 'gray.800')}
+        color={useColorModeValue('gray.600', 'white')}
+        minH={'60px'}
+        py={{ base: 2 }}
+        px={{ base: 4 }}
+        borderBottom={0}
+        borderStyle={'solid'}
+        borderColor={useColorModeValue('gray.200', 'gray.900')}
+        align={'center'}>
+        <Flex
+          flex={{ base: 1, md: 'auto' }}
+          ml={{ base: -2 }}
+          display={{ base: 'flex', md: 'none' }}>
+          <IconButton
+            onClick={onToggle}
+            icon={
+              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+            }
+            variant={'ghost'}
+            aria-label={'Toggle Navigation'}
+          />
+        </Flex>
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Link href={'/waitingPage'}>
+          <Image
+            alt={'Logo Image'}
+            objectFit={'cover'}
+            src={
+              './logo.jpg'
+            }
+            h={"100px"}
+          />
+        </Link>
+       
+
+          <Flex display={{ base: 'none', md: 'flex' }}align={'center'} ml={10}>
+           
+          </Flex>
+        </Flex>
+        <Text mr='10' fontSize={'xl'} fontWeight={600}>{props.data['clinicName']} 您好</Text>
+        <Stack
+          flex={{ base: 1, md: 0 }}
+          justify={'flex-end'}
+          direction={'row'}
+          spacing={6}>
+          
+          <Button
+            as={'a'}
+            display={{ base: 'none', md: 'inline-flex' }}
+            fontSize={'xl'}
+            fontWeight={600}
+            color={'white'}
+            bg={'blue.400'}
+            href={"waitingPage"}
+            _hover={{
+              bg: 'blue.300',
+            }}>
+            等待看診 <Badge ml='2' fontSize='0.8em' colorScheme='red'>
+                    {reserveNum!=0?reserveNum:''}
+                    </Badge>
+          </Button>
+          <Button
+            as={'a'}
+            display={{ base: 'none', md: 'inline-flex' }}
+            fontSize={'xl'}
+            fontWeight={600}
+            color={'white'}
+            bg={'blue.400'}
+            _hover={{
+              bg: 'blue.300',
+            }} onClick={()=>{signOut()}}>
+            登出
+          </Button>
+        </Stack>
+      </Flex>
+
+      <Collapse in={isOpen} animateOpacity>
+        <MobileNav />
+      </Collapse>
+      <Box bg='blue.400' w='100%' p={4} >
+      </Box>
+    </Box>
+     
+   
+  );
+
+
+
+}
+
 
 
 function SignInBar(){
@@ -233,11 +354,11 @@ function SignInBar(){
             fontWeight={600}
             color={'white'}
             bg={'blue.400'}
-            href={"signUp"}
+            href={"clinicSignIn"}
             _hover={{
               bg: 'blue.300',
             }}>
-            診所註冊
+            診所登入
           </Button>
           <Button
             as={'a'}

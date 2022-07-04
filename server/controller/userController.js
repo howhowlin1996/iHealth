@@ -1,5 +1,5 @@
 const patient=require('../models/patientModel');
-
+const clinic=require('../models/clinicModel');
 
 
 async function signUpController(data,type){
@@ -15,6 +15,17 @@ async function signUpController(data,type){
             }
 
            
+        }
+        else{
+            try{
+                console.log(type,'controller');
+                await clinic.createMember(data);
+            }
+            catch(err){
+                console.log(err.message);
+                return err.message;
+            }
+
         }
         return 'success';
 
@@ -34,6 +45,17 @@ async function signInController(data,type){
             }
 
            
+        }
+        else{
+            try{
+                console.log(type);
+                inform=await clinic.nativeSignIn(data.email,data.password,data.remember);
+            }
+            catch(err){
+                console.log(err.message);
+                return err.message;
+            }
+
         }
         console.log(inform);
         return inform;

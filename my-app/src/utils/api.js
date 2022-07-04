@@ -3,8 +3,9 @@
  
 
   const api={
-  hostname:'http://localhost:3001/api/v1', 
-  redirect_uri:'http://localhost:3000/memberInform', 
+  //hostname:'http://localhost:3001/api/v1', 
+  hostname= 'https://18.236.9.61/api/v1',
+  redirect_uri:'https://18.236.9.61/memberInform', 
   signIn:function signIn(data) {
     return fetch(`${this.hostname}/user/signIn?category=patient`, {
       body: JSON.stringify(data),
@@ -27,7 +28,7 @@
   },
 
   getClinicNearBy:async function getClinicNearBy(data){
-    console.log(data);
+    //console.log(data);
    
     return fetch(`${this.hostname}/medical/clinic?type=nearby`, {
       body: JSON.stringify(data),
@@ -57,7 +58,7 @@
    
   },
   getLineNotify:async function getLineNotify(data){
-    console.log(JSON.stringify(data));
+    //console.log(JSON.stringify(data));
     return fetch(`${this.hostname}/notify/accessToken`, {
       body: JSON.stringify(data),
       headers: new Headers({
@@ -68,7 +69,7 @@
    
   },
   getIndividualInform:async function getIndividualInform(data){
-    console.log(JSON.stringify(data),'herre');
+    //console.log(JSON.stringify(data),'herre');
     return fetch(`${this.hostname}/medical/individualInform`, {
       body: JSON.stringify(data),
       headers: new Headers({
@@ -79,7 +80,7 @@
    
   },
   insertClinicReserve:async function insertClinicReserve(data){
-    console.log(JSON.stringify(data),'herre');
+    //console.log(JSON.stringify(data),'herre');
     return fetch(`${this.hostname}/reserve/createClinic`, {
       body: JSON.stringify(data),
       headers: new Headers({
@@ -90,7 +91,7 @@
    
   },
   getClinicReserve:async function getClinicReserve(clincId){
-    console.log(clincId);
+    //console.log(clincId);
     return fetch(`${this.hostname}/reserve/getClinic?clinicId=`+clincId, {
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -100,12 +101,85 @@
    
   },
   getIndividualTotal:async function getIndividualTotal(userId){
-    console.log(userId);
+    //console.log(userId);
     return fetch(`${this.hostname}/reserve/getIndividualTotal?userId=`+userId, {
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
       method: 'GET'
+    }).then((response) => response.json())
+   
+  },
+  
+  cancelClinicReserve:async function cancelClinicReserve(data){
+    console.log(JSON.stringify(data),'herre');
+    return fetch(`${this.hostname}/reserve/cancelClinic`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST'
+    }).then((response) => response.json())
+   
+  },
+ getUserReserveInClinic:async function getUserReserveInClinic(data){
+    console.log(JSON.stringify(data),'herre');
+    return fetch(`${this.hostname}/reserve/getUserReserveInClinic`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST'
+    }).then((response) => response.json())
+   
+  },
+  getReserveInform:async function getReserveInform(type,id){
+    //console.log(userId);
+    return fetch(`${this.hostname}/reserve/wating?type=`+type+`&&id=`+id, {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'GET'
+    }).then((response) => response.json())
+   
+  },
+  clinicSignIn: async function clinicSignIn(data) {
+    return fetch(`${this.hostname}/clinic/signIn?category=clinic`, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST'
+    }).then((response) => response.json());
+  },
+  getRecord:async function getRecord(id){
+    //console.log(userId);
+    return fetch(`${this.hostname}/reserve/record?id=`+id, {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'GET'
+    }).then((response) => response.json())
+   
+  },
+  sendRecord:async function sendRecord(data,id){
+    //console.log(userId);
+    return fetch(`${this.hostname}/record/insert?id=`+id, {
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST'
+    }).then((response) => response.json())
+   
+  },
+  sendNotify:async function sendNotify(userId,clinicId){
+    //console.log(userId);
+    return fetch(`${this.hostname}/notify/send?userId=`+userId+`&&clinicId=`+clinicId, {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      method: 'POST'
     }).then((response) => response.json())
    
   }

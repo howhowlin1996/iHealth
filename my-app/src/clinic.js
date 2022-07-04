@@ -12,7 +12,7 @@ import { useLocation} from 'react-router-dom';
 
 //import {getClinicNearBy,getClinicPopular,getDrugStoreNearBy}from'./utils/api';
 import { useEffect,useState} from 'react';
-import api from'./utils/api'
+import api from'./utils/api';
 
 export default  function Clinic(){
     const search = useLocation().search;
@@ -143,7 +143,7 @@ export default  function Clinic(){
           <Image src={property.imageUrl} alt={property.imageAlt}  />
         </Flex>
         <Flex width='40%'>
-        <Box p='6'>
+        <Box p='6' width='100%'>
 
           <Box
             mt='1'
@@ -210,8 +210,8 @@ export default  function Clinic(){
           <Flex width='60%'>
             <Image src={property.imageUrl} alt={property.imageAlt}  />
           </Flex>
-          <Flex>
-          <Box p='6'>
+          <Flex width='40%'>
+          <Box p='6' width='100%'>
   
             <Box
               mt='1'

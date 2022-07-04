@@ -14,4 +14,16 @@ router.post('/user/signIn', async function(req, res, next) {
   let response=await userController.signInController(req.body,req.query.category);
   res.status(200).send(response);
 });
+
+router.post('/clinic/signUp', async function(req, res, next) {
+  console.log(req.body,'here',req.query.category);
+  let response=await userController.signUpController(req.body,req.query.category);
+  res.status(200).send({status:response});
+});
+
+router.post('/clinic/signIn', async function(req, res, next) {
+  console.log(req.body,'here');
+  let response=await userController.signInController(req.body,req.query.category);
+  res.status(200).send(response);
+});
 module.exports = router;

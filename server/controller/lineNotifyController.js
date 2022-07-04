@@ -10,7 +10,7 @@ async function accessLineNotify(data){
         client_secret:'jPhlIAzmnv1uvxSLQjvKcebC4OTgz1w2di3s7FejVvn',
 
     }
-    let code=await fetch(`https://notify-bot.line.me/oauth/token?grant_type=authorization_code&&client_id=LwQ8Kp1qb0y4iaw5pM7xOH&&client_secret=jPhlIAzmnv1uvxSLQjvKcebC4OTgz1w2di3s7FejVvn&&redirect_uri=http://localhost:3000/memberInform&&code=`+data.code, {
+    let code=await fetch(`https://notify-bot.line.me/oauth/token?grant_type=authorization_code&&client_id=LwQ8Kp1qb0y4iaw5pM7xOH&&client_secret=jPhlIAzmnv1uvxSLQjvKcebC4OTgz1w2di3s7FejVvn&&redirect_uri=https://18.236.9.61/memberInform&&code=`+data.code, {
      
         headers: new fetch.Headers({
           'Content-Type': 'application/json',
@@ -36,9 +36,25 @@ async function accessLineNotify(data){
     
 }
 
+async function sendNotify(userId,clinicId){
+    try{
+        lineNotify.sendNotify(userId,clinicId);
+        return 0;
+    }
+    catch(err){
+        return -1;
+    }
+    
+
+
+    
+    
+}
+
 
 
 
 module.exports={
-   accessLineNotify
+   accessLineNotify,
+   sendNotify
 }

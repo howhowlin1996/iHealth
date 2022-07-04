@@ -14,4 +14,15 @@ router.post('/notify/accessToken', async function(req, res, next) {
         
 });
 
+router.post('/notify/send', async function(req, res, next) {
+    let status= await lineNotifyController.sendNotify(req.query.userId,req.query.clinicId);
+    if(status===0){
+        res.status(200).send({msg:'傳送成功'});
+    }
+    else{
+        res.status(200).send({msg: '傳送失敗'});
+    }
+    
+});
+
 module.exports = router;

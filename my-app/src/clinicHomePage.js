@@ -14,8 +14,8 @@ import {
   import api from'./utils/api'
   import jwt from 'jwt-decode';
   
-  async function createReserve(clientId){
-    console.log(clientId);
+  async function createReserve(clinicId,reserveNum){
+    console.log(reserveNum);
     let patientInform=JSON.parse(localStorage.getItem('token'));
     if(patientInform===null){
       window.location.href='/signIn'
@@ -26,7 +26,35 @@ import {
       let identity=token['identity'];
       let patientId=token['id']
       if(identity==='patient'){
-        let waiting=await api.insertClinicReserve({userId:patientId,clientId:parseInt(clientId)});
+        let reserveCheck=await api.getUserReserveInClinic({userId:patientId,clinicId:parseInt(clinicId)});
+        console.log(Object.keys(reserveCheck).length,'check');
+        if(Object.keys(reserveCheck).length!=0){
+            alert('今日已預約，預約失敗');
+            return reserveNum;
+        }
+        let waiting=await api.insertClinicReserve({userId:patientId,clinicId:parseInt(clinicId)});
+        return waiting['response']['num'];
+        
+      }
+      
+    }
+
+   
+  }
+
+  async function cancelReserve(clinicId){
+    //console.log(clientId);
+    let patientInform=JSON.parse(localStorage.getItem('token'));
+    if(patientInform===null){
+      window.location.href='/signIn'
+    }
+    else{
+      let expired=Date.parse(patientInform['user']['login_at'])+patientInform['user']['access_expired']<Date.parse(new Date());
+      let token=jwt(patientInform['user']['access_token']);
+      let identity=token['identity'];
+      let patientId=token['id']
+      if(identity==='patient'){
+        let waiting=await api.cancelClinicReserve({userId:patientId,clinicId:parseInt(clinicId)});
         return waiting['response']['num'];
         
       }
@@ -49,6 +77,7 @@ import {
         async function getInform(){
             let response=await api.getIndividualInform({id:id,type:type});
             setclinicInform(response);
+            
         }
         getInform();
     },[]);
@@ -63,7 +92,7 @@ import {
     }
     else if (type==='clinic'){
         return(
-            <ClinicCard data={clinicInform} id={id}/>
+            <ClinicCard data={clinicInform} id={id} />
         );
 
     }
@@ -80,8 +109,9 @@ import {
 
 
   function ClinicCard(props){
+    console.log(props.check);
     const [reserve,setReserve]=useState('我要預約');
-    
+    const [nbarNum,setNbarNum]=useState(0);
    
     //console.log(props.id)
     const property = {
@@ -96,20 +126,22 @@ import {
         patientNum:'資料讀取中'
       
       }
+    
     const [reserveNum,setReserveNum]=useState(property.patientNum);
+    
     useEffect(() => {
         async function getReserveNum(){
             setInterval(async() => {
                 let response=await api. getClinicReserve(props.id);
                 setReserveNum(response['response']['num']);
               }, 1000);
-          
         }
         getReserveNum();
     },[]);
+    console.log(reserveNum);
     return (
     <Stack direction={'column'}> 
-        <NavBar/>
+        <NavBar reserveNum={nbarNum}/>
             <Stack direction={'column'}>
                 <Stack minH={'30%'}maxH={'50%'} direction={{ base: 'column', md: 'row' }} width={'60%'} alignSelf={'center'}>
                     <Flex flex={1}>
@@ -175,12 +207,14 @@ import {
                                 if(reserve==='我要預約'){
                                     alert('預約成功');
                                     setReserve('我要解除預約');
-                                    setReserveNum(await createReserve(props.id));
+                                    setReserveNum(await createReserve(props.id,reserveNum));
+                                    setNbarNum(1);
                                 }
                                 else{
                                     alert('解除成功');
                                     setReserve('我要預約');
-                                    setReserveNum(reserveNum-1);
+                                    setReserveNum(await cancelReserve(props.id));
+                                    setNbarNum(-1);
                                 }
                             }}>
                             {reserve}

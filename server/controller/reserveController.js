@@ -48,6 +48,66 @@ async function getIndividualTotal(userId){
 
 }
 
+async function cancelClinicReserve(userId,clinicId){
+    console.log(userId,clinicId);
+    try{
+        let response=await reserve.cancelReserve(userId,clinicId);
+       
+        return response;
+        
+    }
+    catch(err){
+        return err;
+       
+    }
+}
+
+async function getUserReserveInClinic(userId,clinicId){
+    console.log(userId,clinicId);
+    try{
+        let response=await reserve.getUserReserveInClinic(userId,clinicId);
+       
+        return response;
+        
+    }
+    catch(err){
+        return err;
+       
+    }
+
+
+}
+
+async function getWaiting(type,id){
+    console.log(type,id);
+    try{
+        let response=await reserve.getWaiting(type,id);
+       
+        return response;
+        
+    }
+    catch(err){
+        return err;
+       
+    }
+
+
+}
+async function getRecord(id){
+    console.log(id);
+    try{
+        let response=await reserve.getRecord(id);
+        return response;
+      
+        
+    }
+    catch(err){
+        return err;
+       
+    }
+
+
+}
 
 
 
@@ -55,5 +115,9 @@ async function getIndividualTotal(userId){
 module.exports={
    insertClinicReserve,
    getClinicReserve,
-   getIndividualTotal
+   getIndividualTotal,
+   cancelClinicReserve,
+   getUserReserveInClinic,
+   getWaiting,
+   getRecord
 }

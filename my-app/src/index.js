@@ -7,8 +7,10 @@ import SignIn from './signIn';
 import Clinic from './clinic';
 import VideoChat from'./videoChat';
 import ClinicHomePage from './clinicHomePage';
+import WaitingPage from'./waitingPage';
 import reportWebVitals from './reportWebVitals';
 import MemberInform from './memberInformation';
+import ClinicSignIn from './clinicSignIn';
 import { ChakraProvider } from '@chakra-ui/react'
 import {Routes,Route, BrowserRouter}from "react-router-dom";
 
@@ -55,6 +57,16 @@ root.render(
         <Route path ="/memberInform" element={ 
           <ChakraProvider>
             <MemberInform/>
+          </ChakraProvider>} 
+        />
+         <Route path ="/waitingPage" element={ 
+          <ChakraProvider>
+            <WaitingPage/>
+          </ChakraProvider>} 
+        />
+         <Route path ="/clinicSignIn" element={ 
+          <ChakraProvider>
+            <ClinicSignIn/>
           </ChakraProvider>} 
         />
          

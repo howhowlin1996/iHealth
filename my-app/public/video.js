@@ -10,7 +10,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 let offer;
 let pc;
-let url = 'ws://localhost:3001?token='+urlParams.get("token");
+let url = 'wss://18.236.9.61?token='+urlParams.get("token");
 var ws = new WebSocket(url)
 ws.onopen = () => {
   console.log('open connection')
