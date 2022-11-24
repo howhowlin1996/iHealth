@@ -3,11 +3,11 @@ ____
 
 ## Front-End
 
-React.js,HTML,CSS,JavaScript,Chakra UI
+React.js, HTML, CSS, JavaScript, Chakra UI
 
 ## Back-End
 
-Node.js,Express.js,Javascript
+Node.js, Express.js, Javascript
 
 ## Database
 
@@ -15,7 +15,7 @@ MySQL
 
 ## Third-Party API
 
-Line Notify APIs,Geocoding & Search APIs
+Line Notify APIs, Geocoding & Search APIs
 
 ## Features
 
